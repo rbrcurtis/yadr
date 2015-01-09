@@ -27,9 +27,9 @@
   b = branch -v                     # branch (verbose)
 
   # commit
-  c = commit -m                     # commit with message
+  c = commit                        # commit with message
   ca = commit -am                   # commit all with message
-  ci = commit                       # commit
+  cm = commit -m                    # commit
   amend = commit --amend            # ammend your last commit
   ammend = commit --amend           # ammend your last commit
 
@@ -100,6 +100,7 @@
   summary = true
   verbosity = 1
   tool = mvimdiff
+	ff = false
 [apply]
   whitespace = nowarn
 [branch]
@@ -125,3 +126,8 @@
   enabled = true
 [include]
   path = .gitconfig.user
+[user]
+	name = Ryan Curtis
+	email = wednesday@gmail.com
+[pull]
+	rebase = true
