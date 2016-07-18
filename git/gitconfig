@@ -104,15 +104,15 @@
 [apply]
   whitespace = nowarn
 [branch]
-  autosetupmerge = true
+	autosetupmerge = true
 [push]
   # 'git push' will push the current branch to its tracking branch
   # the usual default is to push all branches
-  default = tracking
+	default = current
 [core]
   autocrlf = false
   editor = vim
-  excludesfile = ~/.yadr/git/gitignore
+	excludesfile = /Users/ryan/.yadr/git/gitignore
 [advice]
   statusHints = false
 [diff]
@@ -123,7 +123,7 @@
 [rerere]
   # Remember my merges
   # http://gitfu.wordpress.com/2008/04/20/git-rerere-rereremember-what-you-did-last-time/
-  enabled = true
+	enabled = true
 [include]
   path = .gitconfig.user
 [user]
@@ -131,3 +131,10 @@
 	email = wednesday@gmail.com
 [pull]
 	rebase = true
+	default = current
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Users/ryan/Downloads/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true

@@ -14,6 +14,8 @@ export NODE_PATH=/usr/local/lib/node_modules:/usr/local/share/npm/lib/node_modul
 export JAVA_HOME=/Library/Java/Home
 export AWS_ELB_HOME=/Users/rcurtis/Code/amazon/elb
 
+export GOPATH=$HOME/Code/GO
+
 if [[ "$OSTYPE" == darwin* ]]; then
   export BROWSER='open'
 fi
