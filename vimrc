@@ -104,4 +104,4 @@ set sidescroll=1
 
 
 " ================ Custom Settings ========================
-so ~/.yadr/vim/settings.vim
+" so ~/.yadr/vim/settings.vim
