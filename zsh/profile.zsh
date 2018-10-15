@@ -83,4 +83,4 @@ if [[ ! -d "$TMPPREFIX" ]]; then
 fi
 
 
-
+setopt interactivecomments
