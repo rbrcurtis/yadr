@@ -138,6 +138,3 @@
 [mergetool "sourcetree"]
 	cmd = /Users/ryan/Downloads/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
-[credential]
-	helper = !aws codecommit credential-helper $@
-	UseHttpPath = true
