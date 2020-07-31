@@ -88,6 +88,7 @@ alias gpub='grb publish'
 alias gtr='grb track'
 alias gpl='git pull'
 alias gplr='git pull --rebase'
+alias gp='git push -u'
 alias gps='git push'
 alias gpsh='git push'
 alias gnb='git nb' # new branch aka checkout -b
@@ -173,3 +174,12 @@ alias dbmu='spring rake db:migrate:up'
 
 # Homebrew
 alias brewu='brew update && brew upgrade && brew cleanup && brew prune && brew doctor'
+
+# Other
+#
+alias awsume='. awsume -o default'
+alias notify='osx-notifier --message'
+alias wip='git add .; git ca wip; git push -u'
+alias noop='echo >> package.json && git ca noop && git push'
+
+alias pip='pip3'
