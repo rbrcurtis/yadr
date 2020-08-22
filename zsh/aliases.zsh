@@ -183,3 +183,7 @@ alias wip='git add .; git ca wip; git push -u'
 alias noop='echo >> package.json && git ca noop && git push'
 
 alias pip='pip3'
+
+pc() {
+  psql -h $1-db.janus-ai.com -U dbuser ebdb
+}
