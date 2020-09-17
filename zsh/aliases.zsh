@@ -187,3 +187,7 @@ alias pip='pip3'
 pc() {
   psql -h $1-db.janus-ai.com -U dbuser ebdb
 }
+
+screen-bg() {
+  screen -dm -L -S $1 -- sh -c $2
+}
