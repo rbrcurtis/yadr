@@ -128,7 +128,7 @@
   path = .gitconfig.user
 [user]
 	name = Ryan Curtis
-	email = ryan.curtis@genesys.com
+	email = rbrcurtis@gmail.com
 [pull]
 	rebase = true
 	default = current

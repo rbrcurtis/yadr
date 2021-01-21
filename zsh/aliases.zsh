@@ -188,6 +188,11 @@ pc() {
   psql -h $1-db.janus-ai.com -U dbuser ebdb
 }
 
+pce() {
+  echo "connecting to $RDS_HOSTNAME"
+  PGPASSWORD=$RDS_PASSWORD psql -h $RDS_HOSTNAME -U $RDS_USERNAME $RDS_DB_NAME
+}
+
 screen-bg() {
   screen -dm -L -S $1 -- sh -c $2
 }
