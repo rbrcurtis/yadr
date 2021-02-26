@@ -179,7 +179,7 @@ alias brewu='brew update && brew upgrade && brew cleanup && brew prune && brew d
 #
 alias awsume='. awsume -o default'
 alias notify='osx-notifier --message'
-alias wip='git add .; git ca wip; git push -u'
+alias wip='git add . && git ca wip && git push -u'
 alias noop='echo >> package.json && git ca noop && git push'
 
 alias pip='pip3'
