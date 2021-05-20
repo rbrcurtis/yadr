@@ -184,13 +184,15 @@ alias noop='echo >> package.json && git ca noop && git push'
 
 alias pip='pip3'
 
-pc() {
-  psql -h $1-db.janus-ai.com -U dbuser ebdb
+pc () {
+  db=$1
+  shift
+	psql -h db.$db.janus-ai.com -U dbuser ebdb $@
 }
 
 pce() {
   echo "connecting to $RDS_HOSTNAME"
-  PGPASSWORD=$RDS_PASSWORD psql -h $RDS_HOSTNAME -U $RDS_USERNAME $RDS_DB_NAME
+  PGPASSWORD=$RDS_PASSWORD psql -h $RDS_HOSTNAME -U $RDS_USERNAME $RDS_DB_NAME $@
 }
 
 screen-bg() {
