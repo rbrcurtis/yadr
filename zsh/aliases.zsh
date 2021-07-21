@@ -198,3 +198,12 @@ pce() {
 screen-bg() {
   screen -dm -L -S $1 -- sh -c $2
 }
+
+dev() {
+  awsume dev && aws sts get-caller-identity || awsume dev-super --role-duration 43200 -o dev && awsume dev
+}
+
+app() {
+  awsume app && aws sts get-caller-identity || awsume app-super --role-duration 43200 -o app && awsume app
+}
+
