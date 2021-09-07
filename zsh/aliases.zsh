@@ -207,3 +207,6 @@ app() {
   awsume app && aws sts get-caller-identity || awsume app-super --role-duration 43200 -o app && awsume app
 }
 
+shared() {
+  awsume shared && aws sts get-caller-identity || awsume shared-super --role-duration 43200 -o shared && awsume shared
+}
