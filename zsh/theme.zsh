@@ -1,2 +1,2 @@
-prompt sorin
+prompt steeef 
 export KEYTIMEOUT=1
