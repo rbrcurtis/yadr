@@ -177,12 +177,40 @@ alias brewu='brew update && brew upgrade && brew cleanup && brew prune && brew d
 
 # Other
 #
-alias awsume='. awsume -o default'
+alias awsume='. awsume'
 alias notify='osx-notifier --message'
 alias wip='git add . && git ca wip && git push -u'
+alias wipnv='git add . && git ca wip --no-verify && git push -u'
+alias wipnd='git add . && git ca "[no deploy] wip" && git push -u'
 alias noop='echo >> package.json && git ca noop && git push'
 
 alias pip='pip3'
+alias python=python3
+
+gmp() {
+  git add .
+  git commit -am $1
+  git push
+}
+
+removecontainers() {
+    docker stop $(docker ps -aq)
+    docker rm $(docker ps -aq)
+}
+
+armageddon() {
+    removecontainers
+    docker network prune -f
+    docker rmi -f $(docker images --filter dangling=true -qa)
+    docker volume rm $(docker volume ls --filter dangling=true -q)
+    docker rmi -f $(docker images -qa)
+}
+
+copy-volume() {
+  docker volume rm $2 || true
+  docker volume create $2 || true
+  docker run --rm -it -v $1:/from:ro -v $2:/to alpine ash -c "cd /from ; cp -av . /to"
+}
 
 pc () {
   db=$1
@@ -199,14 +227,11 @@ screen-bg() {
   screen -dm -L -S $1 -- sh -c $2
 }
 
-dev() {
-  awsume dev && aws sts get-caller-identity || awsume dev-super --role-duration 43200 -o dev && awsume dev
-}
+alias trp="ssocreds -p trp && awsume trp"
+alias trd="ssocreds -p trd && awsume trd"
+alias trs="ssocreds -p trs && awsume trs"
 
-app() {
-  awsume app && aws sts get-caller-identity || awsume app-super --role-duration 43200 -o app && awsume app
-}
-
-shared() {
-  awsume shared && aws sts get-caller-identity || awsume shared-super --role-duration 43200 -o shared && awsume shared
-}
+alias k='kubectl'
+alias kg='kubectl get'
+alias kgp='kubectl get pods'
+alias kp='kubectl get pod -o yaml'
