@@ -235,3 +235,7 @@ alias k='kubectl'
 alias kg='kubectl get'
 alias kgp='kubectl get pods'
 alias kp='kubectl get pod -o yaml'
+
+alias q='yarn dbin src/bin/search-query.ts'
+
+alias plain="sed $'s,\x1b\\[[0-9;]*[a-zA-Z],,g'"
