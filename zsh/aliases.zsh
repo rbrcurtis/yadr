@@ -237,5 +237,12 @@ alias kgp='kubectl get pods'
 alias kp='kubectl get pod -o yaml'
 
 alias q='yarn dbin src/bin/search-query.ts'
+alias dq='yarn dbin src/bin/dynamo-get-by-id.ts'
 
 alias plain="sed $'s,\x1b\\[[0-9;]*[a-zA-Z],,g'"
+
+alias next="yarn next"
+
+alias docker-login="aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin `aws sts get-caller-identity | jq -r .Account`.dkr.ecr.$AWS_REGION.amazonaws.com"
+
+alias mosh='mosh --no-init'
