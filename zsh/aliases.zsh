@@ -227,17 +227,22 @@ screen-bg() {
   screen -dm -L -S $1 -- sh -c $2
 }
 
-alias trp="ssocreds -p trp && awsume trp"
-alias trd="ssocreds -p trd && awsume trd"
-alias trs="ssocreds -p trs && awsume trs"
+alias app="ssocreds -p app && awsume app"
+alias dev="ssocreds -p dev && awsume dev"
+alias shared="ssocreds -p shared && awsume shared"
 
 alias k='kubectl'
 alias kg='kubectl get'
 alias kgp='kubectl get pods'
+alias kdp='kubectl delete pod'
 alias kp='kubectl get pod -o yaml'
+kl() {
+  kubectl logs $1; echo
+}
 
 alias q='yarn dbin src/bin/search-query.ts'
 alias dq='yarn dbin src/bin/dynamo-get-by-id.ts'
+alias records='yarn dbin src/bin/records-for-contacts.ts'
 
 alias plain="sed $'s,\x1b\\[[0-9;]*[a-zA-Z],,g'"
 
