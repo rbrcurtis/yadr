@@ -189,8 +189,12 @@ alias python=python3
 
 gmp() {
   git add .
-  git commit -am $1
+  git commit -am "${@}"
   git push
+}
+
+nerp() {
+  echo "'${@}'"
 }
 
 removecontainers() {
@@ -243,6 +247,7 @@ kl() {
 alias q='yarn dbin src/bin/search-query.ts'
 alias dq='yarn dbin src/bin/dynamo-get-by-id.ts'
 alias records='yarn dbin src/bin/records-for-contacts.ts'
+alias merge='yarn dbin src/bin/contact-merge.ts'
 
 alias plain="sed $'s,\x1b\\[[0-9;]*[a-zA-Z],,g'"
 
