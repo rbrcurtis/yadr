@@ -240,8 +240,17 @@ alias kg='kubectl get'
 alias kgp='kubectl get pods'
 alias kdp='kubectl delete pod'
 alias kp='kubectl get pod -o yaml'
+
 kl() {
   kubectl logs $1; echo
+}
+
+ke() {
+  kubectl get events | grep $1; echo
+}
+
+kex() {
+  kubectl exec -it $1 -- bash
 }
 
 alias q='yarn dbin src/bin/search-query.ts'
