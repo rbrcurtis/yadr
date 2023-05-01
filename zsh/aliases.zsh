@@ -257,6 +257,8 @@ alias q='yarn dbin src/bin/search-query.ts'
 alias dq='yarn dbin src/bin/dynamo-get-by-id.ts'
 alias records='yarn dbin src/bin/records-for-contacts.ts'
 alias merge='yarn dbin src/bin/contact-merge.ts'
+alias rebuild='yarn dbin src/bin/contact-rebuild.ts'
+alias dedup='yarn dbin src/bin/contact-dedup.ts --id'
 
 alias plain="sed $'s,\x1b\\[[0-9;]*[a-zA-Z],,g'"
 
