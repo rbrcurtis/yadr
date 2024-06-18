@@ -22,7 +22,6 @@ alias cls='clear;ls'
 # Show human friendly numbers and colors
 alias df='df -h'
 alias ll='ls -alGh'
-alias ls='ls -Gh'
 alias du='du -h -d 2'
 
 # show me files matching "ls grep"
@@ -47,11 +46,9 @@ alias ze='vim ~/.zshrc'
 alias zr='source ~/.zshrc'
 
 # Git Aliases
-alias gs='git status'
 alias gstsh='git stash'
 alias gst='git stash'
 alias gsp='git stash pop'
-alias gsa='git stash apply'
 alias gsh='git show'
 alias gshw='git show'
 alias gshow='git show'
@@ -182,7 +179,7 @@ alias notify='osx-notifier --message'
 alias wip='git add . && git ca wip && git push -u'
 alias wipnv='git add . && git ca wip --no-verify && git push -u'
 alias wipnd='git add . && git ca "[no deploy] wip" && git push -u'
-alias noop='echo >> package.json && git ca noop && git push'
+alias noop='echo >> package.json && git ca noop --no-verify && git push'
 
 alias pip='pip3'
 alias python=python3
@@ -190,7 +187,13 @@ alias python=python3
 gmp() {
   git add .
   git commit -am "${@}"
-  git push
+  git push -u
+}
+
+gmpnv() {
+  git add .
+  git commit -am "${@}" --no-verify
+  git push -u
 }
 
 nerp() {
@@ -206,7 +209,7 @@ armageddon() {
     removecontainers
     docker network prune -f
     docker rmi -f $(docker images --filter dangling=true -qa)
-    docker volume rm $(docker volume ls --filter dangling=true -q)
+    # docker volume rm $(docker volume ls --filter dangling=true -q)
     docker rmi -f $(docker images -qa)
 }
 
@@ -231,8 +234,18 @@ screen-bg() {
   screen -dm -L -S $1 -- sh -c $2
 }
 
-alias app="ssocreds -p app && awsume app"
-alias dev="ssocreds -p dev && awsume dev"
+function gs() {
+    git stash push -u -m "zsh_stash_name_$1"
+}
+
+function gsa() {
+    git stash apply $(git stash list | grep "zsh_stash_name_$1" | cut -d: -f1)
+}
+
+alias dev="awsume dev && aws sts get-caller-identity > /dev/null || ssocreds -p dev && awsume dev"
+
+alias app="awsume app && aws sts get-caller-identity > /dev/null || ssocreds -p app && awsume app"
+
 alias shared="ssocreds -p shared && awsume shared"
 
 alias k='kubectl'
@@ -257,13 +270,21 @@ alias q='yarn dbin src/bin/search-query.ts'
 alias dq='yarn dbin src/bin/dynamo-get-by-id.ts'
 alias records='yarn dbin src/bin/records-for-contacts.ts'
 alias merge='yarn dbin src/bin/contact-merge.ts'
-alias rebuild='yarn dbin src/bin/contact-rebuild.ts'
+alias rebuild='yarn dbin src/bin/contact-rebuild.ts --why manual'
 alias dedup='yarn dbin src/bin/contact-dedup.ts --id'
+alias after-save='yarn dbin src/bin/after-save.ts'
 
 alias plain="sed $'s,\x1b\\[[0-9;]*[a-zA-Z],,g'"
 
 alias next="yarn next"
 
-alias docker-login="aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin `aws sts get-caller-identity | jq -r .Account`.dkr.ecr.$AWS_REGION.amazonaws.com"
+#alias docker-login="aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin `aws sts get-caller-identity | jq -r .Account`.dkr.ecr.$AWS_REGION.amazonaws.com"
 
 alias mosh='mosh --no-init'
+
+tx() {
+  yarn dbin src/bin/search-query.ts --sort transactionDate transaction patientId.keyword:$1
+}
+
+alias watch='watch -c'
+
