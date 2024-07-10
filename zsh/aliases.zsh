@@ -266,25 +266,21 @@ kex() {
   kubectl exec -it $1 -- bash
 }
 
-alias q='yarn dbin src/bin/search-query.ts'
-alias dq='yarn dbin src/bin/dynamo-get-by-id.ts'
-alias records='yarn dbin src/bin/records-for-contacts.ts'
-alias merge='yarn dbin src/bin/contact-merge.ts'
-alias rebuild='yarn dbin src/bin/contact-rebuild.ts --why manual'
-alias dedup='yarn dbin src/bin/contact-dedup.ts --id'
-alias after-save='yarn dbin src/bin/after-save.ts'
+alias q='~/Code/trackable/bin/dist-bin.sh src/bin/search-query.ts'
+alias dq='~/Code/trackable/bin/dist-bin.sh src/bin/dynamo-get-by-id.ts'
+alias records='~/Code/trackable/bin/dist-bin.sh src/bin/records-for-contacts.ts'
+alias merge='~/Code/trackable/bin/dist-bin.sh src/bin/contact-merge.ts'
+alias rebuild='~/Code/trackable/bin/dist-bin.sh src/bin/contact-rebuild.ts --why manual'
+alias dedup='~/Code/trackable/bin/dist-bin.sh src/bin/contact-dedup.ts --id'
+alias after-save='~/Code/trackable/bin/dist-bin.sh src/bin/after-save.ts'
+alias d='~/Code/trackable/bin/dist-bin.sh'
 
 alias plain="sed $'s,\x1b\\[[0-9;]*[a-zA-Z],,g'"
 
 alias next="yarn next"
 
-#alias docker-login="aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin `aws sts get-caller-identity | jq -r .Account`.dkr.ecr.$AWS_REGION.amazonaws.com"
-
 alias mosh='mosh --no-init'
-
-tx() {
-  yarn dbin src/bin/search-query.ts --sort transactionDate transaction patientId.keyword:$1
-}
 
 alias watch='watch -c'
 
+alias ffmpeg-normalize='ffmpeg-normalize -c:a libmp3lame -ext mp3'
