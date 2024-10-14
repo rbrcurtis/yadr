@@ -286,3 +286,6 @@ alias ffmpeg-normalize='ffmpeg-normalize -c:a libmp3lame -ext mp3'
 tmosh() {
   /usr/local/bin/mosh --no-init $1 -- tmux new-session -ADs $(date -u +"%Y%m%d%H%M%S")
 }
+alias mosh='mosh --no-init'
+
+alias pip='pip --break-system-packages'
