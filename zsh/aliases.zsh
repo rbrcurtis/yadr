@@ -248,11 +248,11 @@ alias app="awsume app && aws sts get-caller-identity > /dev/null || ssocreds -p 
 
 alias shared="ssocreds -p shared && awsume shared"
 
-alias k='kubectl'
-alias kg='kubectl get'
-alias kgp='kubectl get pods'
-alias kdp='kubectl delete pod'
-alias kp='kubectl get pod -o yaml'
+alias k='kubectl -n $NAMESPACE'
+alias kg='k get'
+alias kgp='k get pods'
+alias kdp='k delete pod'
+alias kp='k get pod -o yaml'
 
 kl() {
   kubectl logs $1; echo
