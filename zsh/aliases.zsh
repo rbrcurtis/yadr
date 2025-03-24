@@ -242,11 +242,11 @@ function gsa() {
     git stash apply $(git stash list | grep "zsh_stash_name_$1" | cut -d: -f1)
 }
 
-alias dev="awsume dev && aws sts get-caller-identity > /dev/null || ssocreds -p dev && awsume dev"
+alias dev='export NAMESPACE=dev && awsume dev && aws sts get-caller-identity > /dev/null || ssocreds -p dev && awsume dev'
 
-alias app="awsume app && aws sts get-caller-identity > /dev/null || ssocreds -p app && awsume app"
+alias app='export NAMESPACE=app && awsume app && aws sts get-caller-identity > /dev/null || ssocreds -p app && awsume app'
 
-alias shared="ssocreds -p shared && awsume shared"
+alias shared='export NAMESPACE=shared && ssocreds -p shared && awsume shared'
 
 alias k='kubectl -n $NAMESPACE'
 alias kg='k get'
