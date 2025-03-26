@@ -100,6 +100,7 @@ alias gsmu='git submodule update'
 alias gt='git t'
 alias gbg='git bisect good'
 alias gbb='git bisect bad'
+alias gpgp='git pull && git push'
 
 # Common shell functions
 alias less='less -r'
@@ -266,14 +267,14 @@ kex() {
   kubectl exec -it $1 -- bash
 }
 
-alias q='~/Code/trackable/bin/dist-bin.sh src/bin/search-query.ts'
-alias dq='~/Code/trackable/bin/dist-bin.sh src/bin/dynamo-get-by-id.ts'
-alias records='~/Code/trackable/bin/dist-bin.sh src/bin/records-for-contacts.ts'
-alias merge='~/Code/trackable/bin/dist-bin.sh src/bin/contact-merge.ts'
-alias rebuild='~/Code/trackable/bin/dist-bin.sh src/bin/contact-rebuild.ts --why manual'
-alias dedup='~/Code/trackable/bin/dist-bin.sh src/bin/contact-dedup.ts --id'
-alias after-save='~/Code/trackable/bin/dist-bin.sh src/bin/after-save.ts'
-alias d='~/Code/trackable/bin/dist-bin.sh'
+alias q='./bin/dist-bin.sh src/bin/search-query.ts'
+alias dq='./bin/dist-bin.sh src/bin/dynamo-get-by-id.ts'
+alias records='./bin/dist-bin.sh src/bin/records-for-contacts.ts'
+alias merge='./bin/dist-bin.sh src/bin/contact-merge.ts'
+alias rebuild='./bin/dist-bin.sh src/bin/contact-rebuild.ts --why manual'
+alias dedup='./bin/dist-bin.sh src/bin/contact-dedup.ts --id'
+alias after-save='./bin/dist-bin.sh src/bin/after-save.ts'
+alias d='./bin/dist-bin.sh'
 
 alias plain="sed $'s,\x1b\\[[0-9;]*[a-zA-Z],,g'"
 
@@ -289,3 +290,5 @@ tmosh() {
 alias mosh='mosh --no-init'
 
 alias pip='pip --break-system-packages'
+
+alias talos='export CLUSTER=deft1 CONTROL_PLANE_IP=50.31.165.234 TALOSCONFIG=/home/ryan/Code/metal/deft1/talosconfig KUBECONFIG=/home/ryan/Code/metal/kubeconfig'
