@@ -243,7 +243,7 @@ function gsa() {
     git stash apply $(git stash list | grep "zsh_stash_name_$1" | cut -d: -f1)
 }
 
-alias dev='export NAMESPACE=dev && awsume dev && aws sts get-caller-identity > /dev/null || ssocreds -p dev && awsume dev'
+alias dev='export NAMESPACE=dev && awsume dev -o default && aws sts get-caller-identity > /dev/null || ssocreds -p dev && awsume dev -o default'
 
 alias app='export NAMESPACE=app && awsume app && aws sts get-caller-identity > /dev/null || ssocreds -p app && awsume app'
 
@@ -289,6 +289,10 @@ tmosh() {
 }
 alias mosh='mosh --no-init'
 
-alias pip='pip --break-system-packages'
-
 alias talos='export CLUSTER=deft1 CONTROL_PLANE_IP=50.31.165.234 TALOSCONFIG=/home/ryan/Code/metal/deft1/talosconfig KUBECONFIG=/home/ryan/Code/metal/kubeconfig'
+
+alias code=cursor
+
+alias attach='tmux attach-session'
+
+alias claude='claude --dangerously-skip-permissions --model sonnet'
