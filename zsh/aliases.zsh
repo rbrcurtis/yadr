@@ -247,7 +247,7 @@ alias dev='export NAMESPACE=dev && awsume dev -o default && aws sts get-caller-i
 
 alias app='export NAMESPACE=app && awsume app && aws sts get-caller-identity > /dev/null || ssocreds -p app && awsume app'
 
-alias shared='export NAMESPACE=shared && ssocreds -p shared && awsume shared'
+alias shared='export NAMESPACE=default && ssocreds -p shared && awsume shared'
 
 alias k='kubectl -n $NAMESPACE'
 alias kg='k get'
@@ -256,15 +256,15 @@ alias kdp='k delete pod'
 alias kp='k get pod -o yaml'
 
 kl() {
-  kubectl logs $1; echo
+  k logs $1; echo
 }
 
 ke() {
-  kubectl get events | grep $1; echo
+  k get events | grep $1; echo
 }
 
 kex() {
-  kubectl exec -it $1 -- bash
+  k exec -it $1 -- bash
 }
 
 alias q='./bin/dist-bin.sh src/bin/search-query.ts'
@@ -291,7 +291,7 @@ alias mosh='mosh --no-init'
 
 alias talos='export CLUSTER=deft1 CONTROL_PLANE_IP=50.31.165.234 TALOSCONFIG=/home/ryan/Code/metal/deft1/talosconfig KUBECONFIG=/home/ryan/Code/metal/kubeconfig'
 
-alias code=cursor
+#alias code=cursor
 
 alias attach='tmux attach-session'
 
