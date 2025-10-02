@@ -296,3 +296,7 @@ alias talos='export CLUSTER=deft1 CONTROL_PLANE_IP=50.31.165.234 TALOSCONFIG=/ho
 alias attach='tmux attach-session'
 
 alias claude='claude --dangerously-skip-permissions --model sonnet'
+
+function ns() {
+  export NAMESPACE=$1
+}
