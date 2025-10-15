@@ -300,3 +300,11 @@ alias claude='claude --dangerously-skip-permissions --model sonnet'
 function ns() {
   export NAMESPACE=$1
 }
+
+alias stern='stern -s1s -n $NAMESPACE'
+
+function ok() {
+  awsume okkanti
+  yarn kube
+  export KUBECONFIG=/home/ryan/Code/okkanti/kubeconfig-okkanti-dev
+}
