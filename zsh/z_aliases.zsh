@@ -28,8 +28,8 @@ alias du='du -h -d 2'
 alias lsg='ll | grep'
 
 # Alias Editing
-alias ae='vim $yadr/zsh/aliases.zsh' #alias edit
-alias ar='source $yadr/zsh/aliases.zsh'  #alias reload
+alias ae='vim $yadr/zsh/z_aliases.zsh' #alias edit
+alias ar='source $yadr/zsh/z_aliases.zsh'  #alias reload
 
 # vim using
 mvim --version > /dev/null 2>&1
@@ -243,11 +243,11 @@ function gsa() {
     git stash apply $(git stash list | grep "zsh_stash_name_$1" | cut -d: -f1)
 }
 
-alias dev='export NAMESPACE=dev && awsume dev -o default && aws sts get-caller-identity > /dev/null || ssocreds -p dev && awsume dev -o default'
+alias dev='export NAMESPACE=dev KUBECONFIG=/home/ryan/Code/metal/kubeconfig && awsume dev && aws sts get-caller-identity > /dev/null || ssocreds -p dev && awsume dev'
 
-alias app='export NAMESPACE=app && awsume app && aws sts get-caller-identity > /dev/null || ssocreds -p app && awsume app'
+alias app='export NAMESPACE=app KUBECONFIG=/home/ryan/Code/metal/kubeconfig && awsume app && aws sts get-caller-identity > /dev/null || ssocreds -p app && awsume app'
 
-alias shared='export NAMESPACE=default && ssocreds -p shared && awsume shared'
+alias shared='export NAMESPACE=default KUBECONFIG=/home/ryan/Code/metal/kubeconfig && ssocreds -p shared && awsume shared'
 
 alias k='kubectl -n $NAMESPACE'
 alias kg='k get'
@@ -263,8 +263,14 @@ ke() {
   k get events | grep $1; echo
 }
 
-kex() {
-  k exec -it $1 -- bash
+kex () {
+    local pod=$1
+    shift
+    if [ $# -eq 0 ]; then
+        kubectl -n $NAMESPACE exec -it "$pod" -- bash
+    else
+        kubectl -n $NAMESPACE exec -it "$pod" -- "$@"
+    fi
 }
 
 alias q='./bin/dist-bin.sh src/bin/search-query.ts'
@@ -274,7 +280,7 @@ alias merge='./bin/dist-bin.sh src/bin/contact-merge.ts'
 alias rebuild='./bin/dist-bin.sh src/bin/contact-rebuild.ts --why manual'
 alias dedup='./bin/dist-bin.sh src/bin/contact-dedup.ts --id'
 alias after-save='./bin/dist-bin.sh src/bin/after-save.ts'
-alias d='./bin/dist-bin.sh'
+alias d='yarn dbin'
 
 alias plain="sed $'s,\x1b\\[[0-9;]*[a-zA-Z],,g'"
 
@@ -295,16 +301,24 @@ alias talos='export CLUSTER=deft1 CONTROL_PLANE_IP=50.31.165.234 TALOSCONFIG=/ho
 
 alias attach='tmux attach-session'
 
-alias claude='claude --dangerously-skip-permissions --model sonnet'
+alias claude='claude --dangerously-skip-permissions'
 
 function ns() {
   export NAMESPACE=$1
 }
 
-alias stern='stern -s1s -n $NAMESPACE'
+alias stern='stern -s1s -n $NAMESPACE --max-log-requests 100'
 
 function ok() {
   awsume okkanti
   yarn kube
+  export NAMESPACE=okkanti
   export KUBECONFIG=/home/ryan/Code/okkanti/kubeconfig-okkanti-dev
 }
+
+function veep() {
+  awsume veep
+}
+
+alias usage='npx ccusage'
+alias s='session'

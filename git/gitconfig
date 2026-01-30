@@ -100,7 +100,6 @@
   summary = true
   verbosity = 1
   tool = mvimdiff
-	ff = false
 [apply]
   whitespace = nowarn
 [branch]
