@@ -180,7 +180,7 @@ alias notify='osx-notifier --message'
 alias wip='git add . && git ca wip && git push -u'
 alias wipnv='git add . && git ca wip --no-verify && git push -u'
 alias wipnd='git add . && git ca "[no deploy] wip" && git push -u'
-alias noop='echo >> package.json && git ca noop --no-verify && git push'
+alias noop='git commit --allow-empty -m noop --no-verify && git push'
 
 alias pip='pip3'
 alias python=python3
@@ -301,7 +301,13 @@ alias talos='export CLUSTER=deft1 CONTROL_PLANE_IP=50.31.165.234 TALOSCONFIG=/ho
 
 alias attach='tmux attach-session'
 
-alias claude='claude --dangerously-skip-permissions'
+function claude() {
+  local plugin_args=()
+  for d in ~/.claude/plugins/*/; do
+    [[ -d "$d" ]] && plugin_args+=(--plugin-dir "$d")
+  done
+  CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 command claude --dangerously-skip-permissions "${plugin_args[@]}" "$@"
+}
 
 function ns() {
   export NAMESPACE=$1
