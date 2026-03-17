@@ -243,11 +243,17 @@ function gsa() {
     git stash apply $(git stash list | grep "zsh_stash_name_$1" | cut -d: -f1)
 }
 
-alias dev='export NAMESPACE=dev KUBECONFIG=/home/ryan/Code/metal/kubeconfig && awsume dev && aws sts get-caller-identity > /dev/null || ssocreds -p dev && awsume dev'
+_aws_profile() {
+  local profile=$1 namespace=${2:-$1}
+  unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN AWSUME_PROFILE
+  export NAMESPACE=$namespace KUBECONFIG=/home/ryan/Code/metal/kubeconfig AWS_PROFILE=$profile
+  aws sts get-caller-identity --profile "$profile" > /dev/null 2>&1 || aws sso login --profile "$profile"
+  (cd ~/Code/trackable && bin/dev-setup.sh "$profile")
+}
 
-alias app='export NAMESPACE=app KUBECONFIG=/home/ryan/Code/metal/kubeconfig && awsume app && aws sts get-caller-identity > /dev/null || ssocreds -p app && awsume app'
-
-alias shared='export NAMESPACE=default KUBECONFIG=/home/ryan/Code/metal/kubeconfig && ssocreds -p shared && awsume shared'
+function dev() { _aws_profile dev dev; }
+function app() { _aws_profile app app; }
+function shared() { _aws_profile shared default; }
 
 alias k='kubectl -n $NAMESPACE'
 alias kg='k get'
@@ -302,11 +308,7 @@ alias talos='export CLUSTER=deft1 CONTROL_PLANE_IP=50.31.165.234 TALOSCONFIG=/ho
 alias attach='tmux attach-session'
 
 function claude() {
-  local plugin_args=()
-  for d in ~/.claude/plugins/*/; do
-    [[ -d "$d" ]] && plugin_args+=(--plugin-dir "$d")
-  done
-  CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 command claude --dangerously-skip-permissions "${plugin_args[@]}" "$@"
+  CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 /home/ryan/.local/bin/claude --dangerously-skip-permissions --model opus "$@"
 }
 
 function ns() {
@@ -326,5 +328,13 @@ function veep() {
   awsume veep
 }
 
-alias usage='npx ccusage'
+alias usage='npx ccusage@17.2.1'
 alias s='session'
+
+function tail-service() {
+  sudo journalctl -u $1 -f
+}
+
+alias codex="codex --yolo"
+alias kiro="kiro-cli chat -a"
+alias oc="opencode attach http://127.0.0.1:4097 --dir ."
