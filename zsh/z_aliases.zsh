@@ -247,8 +247,10 @@ _aws_profile() {
   local profile=$1 namespace=${2:-$1}
   unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN AWSUME_PROFILE
   export NAMESPACE=$namespace KUBECONFIG=/home/ryan/Code/metal/kubeconfig AWS_PROFILE=$profile
-  aws sts get-caller-identity --profile "$profile" > /dev/null 2>&1 || aws sso login --profile "$profile"
-  (cd ~/Code/trackable && bin/dev-setup.sh "$profile")
+  local sso_args=()
+  [[ -z "$DISPLAY" && -z "$WAYLAND_DISPLAY" && -z "$VSCODE_IPC_HOOK_CLI" ]] && sso_args+=(--no-browser)
+  aws sts get-caller-identity --profile "$profile" > /dev/null 2>&1 || aws sso login "${sso_args[@]}" --profile "$profile"
+  bin/dev-setup.sh "$profile"
 }
 
 function dev() { _aws_profile dev dev; }
@@ -279,14 +281,29 @@ kex () {
     fi
 }
 
-alias q='./bin/dist-bin.sh src/bin/search-query.ts'
+q() {
+  if [ -f ./bin/dist-bin.sh ]; then
+    ./bin/dist-bin.sh src/bin/search-query.ts "$@"
+  else
+    bun src/bin/search-query.ts "$@"
+  fi
+}
+
+unalias d 2>/dev/null
+d() {
+  if [ -f ./bin/dist-bin.sh ]; then
+    ./bin/dist-bin.sh "$@"
+  else
+    bun "$@"
+  fi
+}
+
 alias dq='./bin/dist-bin.sh src/bin/dynamo-get-by-id.ts'
 alias records='./bin/dist-bin.sh src/bin/records-for-contacts.ts'
 alias merge='./bin/dist-bin.sh src/bin/contact-merge.ts'
 alias rebuild='./bin/dist-bin.sh src/bin/contact-rebuild.ts --why manual'
 alias dedup='./bin/dist-bin.sh src/bin/contact-dedup.ts --id'
 alias after-save='./bin/dist-bin.sh src/bin/after-save.ts'
-alias d='yarn dbin'
 
 alias plain="sed $'s,\x1b\\[[0-9;]*[a-zA-Z],,g'"
 
@@ -308,7 +325,7 @@ alias talos='export CLUSTER=deft1 CONTROL_PLANE_IP=50.31.165.234 TALOSCONFIG=/ho
 alias attach='tmux attach-session'
 
 function claude() {
-  CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 /home/ryan/.local/bin/claude --dangerously-skip-permissions --model opus "$@"
+  CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 /home/ryan/.local/bin/cch --dangerously-skip-permissions --model opus "$@"
 }
 
 function ns() {
@@ -322,6 +339,7 @@ function ok() {
   yarn kube
   export NAMESPACE=okkanti
   export KUBECONFIG=/home/ryan/Code/okkanti/kubeconfig-okkanti-dev
+  bin/dev-setup.sh
 }
 
 function veep() {
@@ -337,4 +355,5 @@ function tail-service() {
 
 alias codex="codex --yolo"
 alias kiro="kiro-cli chat -a"
-alias oc="opencode attach http://127.0.0.1:4097 --dir ."
+#alias oc='opencode attach http://127.0.0.1:4097 --dir . -m ${OPENCODE_MODEL:-anthropic/claude-opus-4-6:high}'
+alias oc='OPENCODE_DISABLE_AUTOUPDATE=1 opencode attach http://127.0.0.1:4097 --dir .'
