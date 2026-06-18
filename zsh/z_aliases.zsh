@@ -325,7 +325,7 @@ alias talos='export CLUSTER=deft1 CONTROL_PLANE_IP=50.31.165.234 TALOSCONFIG=/ho
 alias attach='tmux attach-session'
 
 function claude() {
-  CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 /home/ryan/.local/bin/cch --dangerously-skip-permissions --model opus "$@"
+  CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 /home/ryan/.local/bin/claude --dangerously-skip-permissions --model opus "$@"
 }
 
 function ns() {
@@ -357,3 +357,6 @@ alias codex="codex --yolo"
 alias kiro="kiro-cli chat -a"
 #alias oc='opencode attach http://127.0.0.1:4097 --dir . -m ${OPENCODE_MODEL:-anthropic/claude-opus-4-6:high}'
 alias oc='OPENCODE_DISABLE_AUTOUPDATE=1 opencode attach http://127.0.0.1:4097 --dir .'
+
+# nvtop
+alias nvtop='nvtop -P'
