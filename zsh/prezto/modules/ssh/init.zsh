@@ -10,6 +10,12 @@ if [[ "$OSTYPE" == darwin* ]] || (( ! $+commands[ssh-agent] )); then
   return 1
 fi
 
+# Boot-time tmux sessions have no terminal where a passphrase can be entered.
+# Do not start an empty agent or run ssh-add in their panes.
+if [[ -n "$TMUX" ]]; then
+  return 0
+fi
+
 # Set the path to the SSH directory.
 _ssh_dir="$HOME/.ssh"
 

@@ -175,7 +175,6 @@ alias brewu='brew update && brew upgrade && brew cleanup && brew prune && brew d
 
 # Other
 #
-alias awsume='. awsume'
 alias notify='osx-notifier --message'
 alias wip='git add . && git ca wip && git push -u'
 alias wipnv='git add . && git ca wip --no-verify && git push -u'
@@ -243,14 +242,19 @@ function gsa() {
     git stash apply $(git stash list | grep "zsh_stash_name_$1" | cut -d: -f1)
 }
 
+alias awsume='. awsume'
+
 _aws_profile() {
   local profile=$1 namespace=${2:-$1}
-  unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN AWSUME_PROFILE
-  export NAMESPACE=$namespace KUBECONFIG=/home/ryan/Code/metal/kubeconfig AWS_PROFILE=$profile
-  local sso_args=()
-  [[ -z "$DISPLAY" && -z "$WAYLAND_DISPLAY" && -z "$VSCODE_IPC_HOOK_CLI" ]] && sso_args+=(--no-browser)
-  aws sts get-caller-identity --profile "$profile" > /dev/null 2>&1 || aws sso login "${sso_args[@]}" --profile "$profile"
-  bin/dev-setup.sh "$profile"
+  export NAMESPACE=$namespace KUBECONFIG=/home/ryan/Code/metal/kubeconfig
+  awsume "$profile" || return
+
+  # dev-setup.sh is per-repo and only writes .env.local; skip it outside a repo that has one
+  local root
+  root="$(git rev-parse --show-toplevel 2>/dev/null)"
+  if [[ -n $root && -x $root/bin/dev-setup.sh ]]; then
+    (cd "$root" && bin/dev-setup.sh "$profile")
+  fi
 }
 
 function dev() { _aws_profile dev dev; }
@@ -358,5 +362,25 @@ alias kiro="kiro-cli chat -a"
 #alias oc='opencode attach http://127.0.0.1:4097 --dir . -m ${OPENCODE_MODEL:-anthropic/claude-opus-4-6:high}'
 alias oc='OPENCODE_DISABLE_AUTOUPDATE=1 opencode attach http://127.0.0.1:4097 --dir .'
 
-# nvtop
 alias nvtop='nvtop -P'
+alias kimi='kimi --yolo'
+
+function kgn() {
+  local nodes top pods
+  nodes=$(kubectl get nodes --no-headers --request-timeout=5s 2>&1) || { echo "$nodes"; return 1; }
+  top=$(kubectl top nodes --no-headers --request-timeout=5s 2>/dev/null)
+  pods=$(kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{.spec.nodeName}{"\n"}{end}' --request-timeout=5s 2>/dev/null | sort | uniq -c | awk '{print $2, $1}')
+
+  {
+    printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' NAME STATUS ROLES AGE VERSION CPU CPU% MEM MEM% PODS
+    echo "$nodes" | while read -r nname nstatus nroles nage nversion; do
+      cpu=$(echo "$top" | awk -v n="$nname" '$1==n {print $2}')
+      cpup=$(echo "$top" | awk -v n="$nname" '$1==n {print $3}')
+      mem=$(echo "$top" | awk -v n="$nname" '$1==n {print $4}')
+      memp=$(echo "$top" | awk -v n="$nname" '$1==n {print $5}')
+      count=$(echo "$pods" | awk -v n="$nname" '$1==n {print $2}')
+      printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$nname" "$nstatus" "$nroles" "$nage" "$nversion" "${cpu:--}" "${cpup:--}" "${mem:--}" "${memp:--}" "${count:-0}"
+    done
+  } | column -t
+}
+
